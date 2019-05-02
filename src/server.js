@@ -8,7 +8,9 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 
 // Routes
-app.use(require('./routes/HomeRoute'));
+app.use('/api',require('./routes/home-route'));
+app.use('/api',require('./routes/appt-route'));
+
 
 // Starting the server
 app.listen(app.get('port'), () => {
