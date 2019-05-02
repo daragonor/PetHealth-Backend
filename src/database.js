@@ -4,7 +4,7 @@ const mysqlConnection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'pethealthdb',
+  database: 'pethealth_db',
   multipleStatements: true
 });
 
