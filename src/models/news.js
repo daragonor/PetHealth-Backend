@@ -8,16 +8,16 @@ class News {
         this.image = image
     }
     getNews(handler) { 
-        var news = []
+        var newsArr = []
         connection.query('SELECT * FROM News', (err, rows, fields) => {
             if(!err) {
-                for (var i = 0; i < rows.length; i++) {
-                    news.push(new News(
-                      rows[i].News_id,
-                      rows[i].content,
-                      rows[i].image))
-                }
-                handler(news,null)
+              rows.array.forEach(news => {
+                newsArr.push(new News(
+                  news.News_id,
+                  news.content,
+                  news.image))  
+              });
+              handler(newsArr,null)
             } else {
               console.log(err);
               handler(null,err)
