@@ -1,12 +1,15 @@
 const mysql = require('mysql');
-
-const mysqlConnection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'pethealth_db',
-  multipleStatements: true
-});
+if (process.env.JAWSDB_URL){
+  var mysqlConnection = mysql.createConnection(process.env.JAWSDB_URL);
+} else {
+  var mysqlConnection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'pethealth_db',
+    multipleStatements: true
+  });
+}
 
 mysqlConnection.connect(function (err) {
   if (err) {
