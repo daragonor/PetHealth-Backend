@@ -11,7 +11,6 @@ app.use(express.json());
 app.use('/api',require('./routes/home-route'));
 app.use('/api',require('./routes/appt-route'));
 
-
 // Starting the server
 app.listen(app.get('port'), () => {
   console.log(`Server on port ${app.get('port')}`);

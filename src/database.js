@@ -3,11 +3,11 @@ if (process.env.JAWSDB_URL){
   var mysqlConnection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
   var mysqlConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'pethealth_db',
-    multipleStatements: true
+    host: 'k3xio06abqa902qt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',	
+    user: 'g4z7ip3ryyoxcdrd',
+    password: 'xddb4awug6wh4uc1',
+    database: 'gmpxirv4ivcjeeqb',
+    port:'3306'
   });
 }
 

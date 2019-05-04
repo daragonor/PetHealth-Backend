@@ -11,7 +11,7 @@ class News {
         var newsArr = []
         connection.query('SELECT * FROM News', (err, rows, fields) => {
             if(!err) {
-              rows.array.forEach(news => {
+              rows.forEach(news => {
                 newsArr.push(new News(
                   news.News_id,
                   news.content,
