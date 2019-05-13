@@ -7,7 +7,7 @@ router.get('/news', (req, res) => {
         if (err){}
         let response = {
             status:"ok",
-            message:"News where retrieved succesfuly",
+            message:"News where retrieved succesfuly.",
             data: news
         }  
         res.json(response)

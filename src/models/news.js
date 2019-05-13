@@ -15,7 +15,7 @@ class News {
                 newsArr.push(new News(
                   news.News_id,
                   news.content,
-                  news.image))  
+                  news.Image))  
               });
               handler(newsArr,null)
             } else {

@@ -8,10 +8,10 @@ router.get('/appts', (req, res) => {
         if (err){}
         let response = {
             status:"ok",
-            message:"Appointments where retrieved successfuly",
+            message:"Appointments where retrieved successfuly.",
             data: appts
         } 
-        res.json(appts)
+        res.json(response)
     });
 });
 
