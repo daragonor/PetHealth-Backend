@@ -8,22 +8,21 @@ class News {
         this.image = image
     }
     getNews(handler) { 
-        var newsArr = []
-        connection.query('SELECT * FROM News', (err, rows, fields) => {
-            if(!err) {
-              rows.forEach(news => {
-                newsArr.push(new News(
-                  news.News_id,
-                  news.content,
-                  news.Image))  
-              });
-              handler(newsArr,null)
-            } else {
-              console.log(err);
-              handler(null,err)
-            }
-          });  
-
+      var newsArr = []
+      connection.query('SELECT * FROM News', (err, rows, fields) => {
+          if(!err) {
+            rows.forEach(news => {
+              newsArr.push(new News(
+                news.News_id,
+                news.content,
+                news.Image))  
+            });
+            handler(newsArr,null)
+          } else {
+            console.log(err);
+            handler(null,err)
+          }
+      });  
     }
   }
   
