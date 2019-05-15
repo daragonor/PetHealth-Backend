@@ -3,6 +3,16 @@ const router = express.Router();
 
 const connection  = require('../database.js');
 
+router.get('/',helpers.verifyToken, (req, res) => {
+  jwt.verify(req.token, helpers.secret_key, (err, authData) => {
+      if(err) {
+        res.sendStatus(403);
+      } else {
+  
+      }
+  }); 
+});
+
 // GET all Employees
 router.get('/', (req, res) => {
     connection.query('SELECT * FROM employee', (err, rows, fields) => {

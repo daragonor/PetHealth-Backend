@@ -1,5 +1,5 @@
 const express = require('express');
-const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const connection = require('../database')
 const helpers = require('../lib/helpers');
 
@@ -11,9 +11,9 @@ router.post('/signup',async (req,res) => {
         message:"Signed Up succesfuly.",
         data: null
     }
-    const { Username, Password, Mail, Photo, Userable_type } = req.body;
-    let User = {Username,Password,Mail,Photo,Userable_type};
-    User.Password = await helpers.encryptPassword(Password);
+    const { username, password, mail, photo, userable_type } = req.body;
+    let user = {username,password,mail,photo,userable_type};
+    user.password = await helpers.encryptPassword(password);
     // Saving in the Database
     const result = await connection.query('INSERT INTO User SET ? ', User);
     res.json(response)
@@ -24,30 +24,32 @@ router.post('/login', (req,res) => {
     let response = {
         status:"ok",
         message:"",
-        data: { valid : false }
+        data: { user : {}, access_token: "", }
     }
-    const { Username, Password } = req.body
-    connection.query('SELECT * FROM User WHERE Username = ?', [Username], async (err, rows, fields) => {
+    const { username, password } = req.body
+    connection.query('SELECT * FROM User WHERE username = ?', [username], async (err, rows) => {
         if(!err) {
             if (rows.length > 0) {
                 const user = rows[0];
-                const validPassword = await helpers.matchPassword(Password, user.Password)
+                const validPassword = await helpers.matchPassword(password, user.password)
                 if (validPassword) {
-                    response.data.valid = true
+                    response.data.user = user
                     response.message = "Login succesful."
+                    response.data.access_token = jwt.sign({ id:  user.id }, helpers.secret_key)
+                    res.status(200).send(response);
                 } else {
                     response.message = "Incorrect Password."
                 }
-                res.json(response)
+                res.status(200).send(response)
             } else {
                 response.message = "The Username does not exists."
-                res.json(response)
+                res.status(200).send(response)
             }
         } else {
           console.log(err);
           response.status = "error"
           response.message = err
-          res.json(response)
+          res.send(response)
         }
     });  
     
