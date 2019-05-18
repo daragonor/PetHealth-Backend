@@ -13,9 +13,9 @@ class News {
           if(!err) {
             rows.forEach(news => {
               newsArr.push(new News(
-                news.News_id,
+                news.news_id,
                 news.content,
-                news.Image))  
+                news.image))  
             });
             handler(newsArr,null)
           } else {
