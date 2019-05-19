@@ -2,10 +2,12 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const connection = require('../database')
 const helpers = require('../lib/helpers');
+const multer = require('multer');
+const upload = multer();
 
 const router = express.Router();
 
-router.post('/signup',async (req,res) => {
+router.post('/signup', async (req,res) => {
     let response = {
         status:"ok",
         message:"Signed Up succesfuly.",
@@ -53,7 +55,9 @@ router.post('/signup',async (req,res) => {
 });
 
 
-router.post('/login', (req,res) => {
+router.post('/login', upload.none(), (req,res) => {
+    const formData = req.body;
+    console.log('form data', formData);
     let response = {
         status:"ok",
         message:"",
