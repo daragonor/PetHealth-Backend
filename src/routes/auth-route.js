@@ -11,14 +11,12 @@ router.post('/signup',async (req,res) => {
         message:"Signed Up succesfuly.",
         data: null
     }
-    const { username, password, mail, photo, userable_type, 
-        name, last_name, dni, phone,address,
-        linkedin_link, degree,
-        location, opening_hours,
-        website_url, youtube_url, twitter_url } = req.body;
+    const { username, password, mail, photo, userable_type, name, last_name, dni, phone,address,
+        linkedin_link, degree, location, opening_hours, website_url, youtube_url, twitter_url } = req.body;
     let user = {username,password,mail,photo,userable_type};
+
     user.password = await helpers.encryptPassword(password);
-    // Saving in the Database
+    
     connection.query('INSERT INTO User SET ? ', user, async (err, rows)=>{
         const userId = rows.insertId
         let person = {person_id : userId, name, last_name, dni, address, phone}

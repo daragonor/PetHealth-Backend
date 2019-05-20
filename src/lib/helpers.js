@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-
+const jwt = require('jsonwebtoken');
 const helpers = {};
 
 helpers.secret_key = "secretkey23456"
@@ -27,7 +27,13 @@ helpers.verifyToken = (req, res, next) => {
     // Set the token
     req.token = token;
     // Next middleware
-    next();
+    jwt.verify(req.token, helpers.secret_key, (err, authData) => {
+      if(err) {
+        res.sendStatus(403);
+      } else {
+        next();
+      }
+  }); 
   } else {
     // Forbidden
     res.sendStatus(403);
