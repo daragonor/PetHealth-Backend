@@ -14,6 +14,7 @@ app.use(express.json());
 app.use('/api',require('./routes/home-route'));
 app.use('/api',require('./routes/appt-route'));
 app.use('/api',require('./routes/auth-route'));
+app.use('/api',require('./routes/pets-route'));
 
 
 // Starting the server
