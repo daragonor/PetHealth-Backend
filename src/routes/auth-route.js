@@ -11,6 +11,7 @@ const vetAPI = require('../models/vet')
 const customerAPI = require('../models/customer')
 
 router.post('/signup',async (req,res) => {
+
     let response = {
         status:"ok",
         message:"",
@@ -65,9 +66,8 @@ router.post('/signup',async (req,res) => {
     })
 });
 
-
-
 router.post('/login', (req,res) => {
+
     let response = {
         status:"ok",
         message:"",
