@@ -5,10 +5,11 @@ const helpers = require('../lib/helpers');
 
 const petAPI = require('../models/pet.js');
 
-router.get('/pets',helpers.verifyToken,(req,res)=>{
+router.get('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
     jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
-            petAPI.getAll((pets,err)=>{
+            let userId = req.params.userId;
+            petAPI.getAll(userId,(pets,err)=>{
                 let response = {
                     status: "",
                     message: "",
@@ -29,11 +30,12 @@ router.get('/pets',helpers.verifyToken,(req,res)=>{
     });
 });
 
-router.get('/pets/:id',helpers.verifyToken,(req,res)=>{
+router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
     jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
             let id = req.params.id;
-            petAPI.getPet(id,(pet,err)=>{
+            let userId = req.params.userId;
+            petAPI.getPet(userId,id,(pet,err)=>{
                 let response = {
                     status: "",
                     message: "",
@@ -54,12 +56,13 @@ router.get('/pets/:id',helpers.verifyToken,(req,res)=>{
     });
 });
 
-router.post('/pets',helpers.verifyToken,(req,res)=>{
+router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
     jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
+            let userId = req.params.userId;
             const {name, description,race,birth_date,status,image_url,owner_id} = req.body;
             let newPet = {name,description,race,birth_date,status,image_url,owner_id};
-            petAPI.addPet(newPet,(err)=>{
+            petAPI.addPet(userId,newPet,(err)=>{
                 let response = {
                     status: "",
                     message: "",
@@ -80,13 +83,14 @@ router.post('/pets',helpers.verifyToken,(req,res)=>{
     });
 });
 
-router.put('/pets/:id',helpers.verifyToken,(req,res)=>{
+router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
     jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
             const {name, description,race,birth_date,status,image_url,owner_id} = req.body;
             let petValues = {name,description,race,birth_date,status,image_url,owner_id};
+            let userId = req.params.userId;
             let petId = req.params.id;
-            petAPI.updatePet(petValues,petId,(err)=>{
+            petAPI.updatePet(userId,petValues,petId,(err)=>{
                 let response = {
                     status: "",
                     message: "",
@@ -107,11 +111,12 @@ router.put('/pets/:id',helpers.verifyToken,(req,res)=>{
     });
 });
 
-router.delete('/pets/:id',helpers.verifyToken,(req,res)=>{
+router.delete('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
     jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
+            let userId = req.params.userId;
             let petId = req.params.id;
-            petAPI.deletePet(petId,(err)=>{
+            petAPI.deletePet(userId,petId,(err)=>{
                 let response = {
                     status: "",
                     message: "",
