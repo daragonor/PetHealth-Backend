@@ -17,12 +17,12 @@ router.get('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
                 };
                 if(err){
                     response.status = "Error";
-                    response.message = "Error retrieving Pets";
+                    response.message = err;
                 }else{
                     response.status = "ok";
                     response.message = "Pets where retrieved successfuly.";
                 }
-                res.json(response);
+                res.sendStatus(200).send(response);
             })
         }else{
             res.sendStatus(403);
@@ -43,12 +43,12 @@ router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 };
                 if(err){
                     response.status = "Error";
-                    response.message = "Error retrieving Pets";
+                    response.message = err;
                 }else{
                     response.status = "ok";
                     response.message = "Pets where retrieved successfuly.";
                 }
-                res.json(response);
+                res.sendStatus(200).send(response);
             });
         }else{
             res.sendStatus(403);
@@ -60,7 +60,8 @@ router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
     jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
             let userId = req.params.userId;
-            const {name, description,race,birth_date,status,image_url,owner_id} = req.body;
+            const {name, description,race,birth_date,status,image_url} = req.body;
+            const owner_id = userId;
             let newPet = {name,description,race,birth_date,status,image_url,owner_id};
             petAPI.addPet(userId,newPet,(err)=>{
                 let response = {
@@ -69,13 +70,13 @@ router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
                 }
                 if(err){
                     response.status = "Error";
-                    response.message = "Error adding pet";
+                    response.message = err;
                 }
                 else{
                     response.status = "ok";
                     response.status = "Pet added successfully";
                 }
-                res.json(response);
+                res.sendStatus(200).send(response);
             });
         }else{
             res.sendStatus(403);
@@ -86,10 +87,11 @@ router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
 router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
     jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
-            const {name, description,race,birth_date,status,image_url,owner_id} = req.body;
-            let petValues = {name,description,race,birth_date,status,image_url,owner_id};
             let userId = req.params.userId;
             let petId = req.params.id;
+            const {name, description,race,birth_date,status,image_url} = req.body;
+            const owner_id = userId;
+            let petValues = {name,description,race,birth_date,status,image_url,owner_id};
             petAPI.updatePet(userId,petValues,petId,(err)=>{
                 let response = {
                     status: "",
@@ -97,13 +99,13 @@ router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 }
                 if(err){
                     response.status = "Error";
-                    response.message = "Error updating pet";
+                    response.message = err;
                 }
                 else{
                     response.status = "ok";
                     response.status = "Pet updated successfully";
                 }
-                res.json(response);
+                res.sendStatus(200).send(response);
             });
         }else{
             res.sendStatus(403);
@@ -123,13 +125,13 @@ router.delete('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 }
                 if(err){
                     response.status = "Error";
-                    response.message = "Error deleting pet";
+                    response.message = err;
                 }
                 else{
                     response.status = "ok";
                     response.status = "Pet deleted successfully";
                 }
-                res.json(response);
+                res.sendStatus(200).send(response);
             });
         }else{
             res.sendStatus(403);
