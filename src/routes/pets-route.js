@@ -39,7 +39,7 @@ router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 let response = {
                     status: "",
                     message: "",
-                    data: pets
+                    data: pet
                 };
                 if(err){
                     response.status = "Error";
