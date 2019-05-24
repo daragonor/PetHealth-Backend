@@ -38,7 +38,7 @@ class Pet{
     }
     getPet(userId,petId,handler){
         var pet = null;
-        connection.query('SELECT * FROM Pet WHERE owner_id = ?,pet_id = ?',[userId,petId],(err,rows)=>{
+        connection.query('SELECT * FROM Pet WHERE owner_id = ? AND pet_id = ?',[userId,petId],(err,rows)=>{
             if(!err){
                 rows.forEach(p =>{
                     pet = new Pet(
@@ -72,7 +72,7 @@ class Pet{
     }
 
     updatePet(userId,petData,petId,handler){
-        connection.query('UPDATE Pet SET ? WHERE owner_id = ?, pet_id = ?',[petData,userId,petId],(err,result)=>{
+        connection.query('UPDATE Pet SET ? WHERE owner_id = ? AND pet_id = ?',[petData,userId,petId],(err,result)=>{
             if(!err){
                 handler(null);
             }else{
@@ -83,7 +83,7 @@ class Pet{
     }
 
     deletePet(userId,petId,handler){
-        connection.query('DELETE FROM Pet WHERE owner_id = ?, pet_id = ?',[userId,petId],(err,id)=>{
+        connection.query('DELETE FROM Pet WHERE owner_id = ? AND pet_id = ?',[userId,petId],(err,id)=>{
             if(err){
                 handler(null);
             }else{
