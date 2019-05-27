@@ -60,8 +60,9 @@ class Pet{
         })
     }
 
-    addPet(userId,petData,handler){
-        connection.query('INSERT INTO Pet SET ? WHERE owner_id = ?',[petData,userId],(err,result)=>{
+    addPet(petData,handler){
+        console.log(petData);
+        connection.query('INSERT INTO Pet SET ?',[petData],(err,result)=>{
             if(!err){
                 handler(null);
             }else{

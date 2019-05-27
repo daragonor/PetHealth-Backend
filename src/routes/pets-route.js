@@ -6,7 +6,6 @@ const helpers = require('../lib/helpers');
 const petAPI = require('../models/pet.js');
 
 router.get('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
-    jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
             let userId = req.params.userId;
             petAPI.getAll(userId,(pets,err)=>{
@@ -22,16 +21,14 @@ router.get('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
                     response.status = "ok";
                     response.message = "Pets where retrieved successfuly.";
                 }
-                res.sendStatus(200).send(response);
+                res.status(200).send(response);
             })
         }else{
             res.sendStatus(403);
         }
-    });
 });
 
 router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
-    jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
             let id = req.params.id;
             let userId = req.params.userId;
@@ -48,22 +45,21 @@ router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                     response.status = "ok";
                     response.message = "Pets where retrieved successfuly.";
                 }
-                res.sendStatus(200).send(response);
+                res.status(200).send(response);
             });
         }else{
             res.sendStatus(403);
         }
-    });
 });
 
 router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
-    jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
-            let userId = req.params.userId;
+            console.log(req.body);
+            let userId = parseInt(req.params.userId);
             const {name, description,race,birth_date,status,image_url} = req.body;
             const owner_id = userId;
             let newPet = {name,description,race,birth_date,status,image_url,owner_id};
-            petAPI.addPet(userId,newPet,(err)=>{
+            petAPI.addPet(newPet,(err)=>{
                 let response = {
                     status: "",
                     message: "",
@@ -73,19 +69,18 @@ router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
                     response.message = err;
                 }
                 else{
-                    response.status = "ok";
-                    response.status = "Pet added successfully";
+                    response.status = "Ok";
+                    response.message = "Pet added successfully";
                 }
-                res.sendStatus(200).send(response);
+                res.status(200).send(response);
             });
         }else{
             res.sendStatus(403);
         }
-    });
+   
 });
 
 router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
-    jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
             let userId = req.params.userId;
             let petId = req.params.id;
@@ -105,16 +100,14 @@ router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                     response.status = "ok";
                     response.status = "Pet updated successfully";
                 }
-                res.sendStatus(200).send(response);
+                res.status(200).send(response);
             });
         }else{
             res.sendStatus(403);
         }
-    });
 });
 
 router.delete('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
-    jwt.verify(req.token,helpers.secret_key,(err,authData)=>{
         if(!err){
             let userId = req.params.userId;
             let petId = req.params.id;
@@ -131,12 +124,11 @@ router.delete('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                     response.status = "ok";
                     response.status = "Pet deleted successfully";
                 }
-                res.sendStatus(200).send(response);
+                res.status(200).send(response);
             });
         }else{
             res.sendStatus(403);
         }
-    });
 });
 
 module.exports = router;
