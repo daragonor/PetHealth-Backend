@@ -109,6 +109,17 @@ class Contract{
         });
     }
 
+    refuseRequest(contractId,handler){
+        connection.query('UPDATE Contract SET request = -1 WHERE contract_id = ?',[contractId],(err,result) => {
+            if(err){
+                console.log(err);
+                handler(err);
+            }else{ 
+                handler(null);
+            }
+        });
+    }
+
     deleteContract(contractId,handler){
         connection.query('DELETE FROM Contract WHERE contract_id = ?',[contractId],(err,result) => {
             if(err){
@@ -120,3 +131,5 @@ class Contract{
         });
     }
 }
+
+module.exports = new Contract();
