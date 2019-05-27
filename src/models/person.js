@@ -9,6 +9,18 @@ class Person {
         this.dni = dni
         this.address = address
     }
+    getPerson(id,handler){
+      connection.query('SELECT * FROM Person WHERE person_id = ? ', [id], (err, rows) => {
+        if(!err) {
+          const person = rows[0]
+          const response = new Person(person.person_id,person.name,person.last_name, person.phone,person.dni,person.address)
+          handler(response,null)
+        } else {
+          console.log(err);
+          handler(null,err)
+        } 
+      })
+    }
     addPerson(person,handler) { 
       connection.query('INSERT INTO Person SET ? ', person, (err, rows) => {
         if(!err) {

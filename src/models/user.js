@@ -12,9 +12,9 @@ class User {
     }
     getUser(username, handler) { 
       var user = null
-      connection.query('SELECT * FROM User WHERE username = ?', [username], async (err, rows) => {
+      connection.query('SELECT * FROM User WHERE username = ?', [username], (err, rows) => {
           if(!err) {
-            user = new User(rows[0].id, rows[0].username, rows[0].password, rows[0].mail, rows[0]. photo, rows[0].userable_type)
+            user = new User(rows[0].user_id, rows[0].username, rows[0].password, rows[0].mail, rows[0]. photo, rows[0].userable_type)
             handler(user,null)
           } else {
             console.log(err);

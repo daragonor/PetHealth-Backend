@@ -11,28 +11,26 @@ class Appt {
         this.end_t = end_t
         this.register_date = register_date
         this.pet_photo = pet_photo
-        this.preescription = preescription 
         this.pet_id = pet_id
         this.vet_id = vet_id
         this.veterinary_id = veterinary_id 
       }
-    getAppts(handler) { 
+    getAppts(userId,userableType,handler) { 
         var appts = []
         connection.query('SELECT * FROM Appointment', (err, rows, fields) => {
             if(!err) {
               rows.forEach(appt => {
                 appts.push(new Appt(
-                  appt.Appointment_id,
-                  appt.Appointment_date,
-                  appt.Description,
+                  appt.appointment_id,
+                  appt.appointment_date,
+                  appt.description,
                   appt.status,
-                  appt.Starttime,
-                  appt.End_Time,
-                  appt.Register_Date,
-                  appt.Pet_photo,
-                  appt.preescription,
+                  appt.start_time,
+                  appt.end_time,
+                  appt.register_date,
+                  appt.pet_photo,
                   appt.pet_id,
-                  appt.vet_id,
+                  appt.veterinarian_id,
                   appt.veterinary_id
                   ))
               });

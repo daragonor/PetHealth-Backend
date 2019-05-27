@@ -79,14 +79,41 @@ router.post('/login', (req,res) => {
             if (user) {
                 const validPassword = await helpers.matchPassword(password, user.password)
                 if (validPassword) {
+                    response.data.access_token = jwt.sign({ id:  user.id }, helpers.secret_key)
                     response.data.user = user
                     response.message = "Login succesful."
-                    response.data.access_token = jwt.sign({ id:  user.id }, helpers.secret_key)
-                    res.status(200).send(response);
+                    switch (user.userable_type) {
+                        case 0:
+                            veterinaryAPI.getVeterinary(user.id,(veterinary,err) => {
+                                response.data.veterinary = veterinary
+                                res.status(200).send(response);
+                            });
+                            break;
+                        case 1:
+                            personAPI.getPerson(user.id,(person,err) => {
+                                response.data.person = person
+                                vetAPI.getVet(user.id, (vet,err) => {
+                                    response.data.vet = vet
+                                    res.status(200).send(response);
+                                })
+                            });
+                            break;
+                        case 2:
+                            personAPI.getPerson(user.id,(person,err) => {
+                                response.data.person = person
+                                customerAPI.getCustomer(user.id, (customer,err) => {
+                                    response.data.customer = customer
+                                    res.status(200).send(response);
+                                })
+                            });
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
                     response.message = "Incorrect Password."
+                    res.status(200).send(response);
                 }
-                res.status(200).send(response)
             } else {
                 response.message = "The Username does not exists."
                 res.status(200).send(response)

@@ -1,10 +1,22 @@
 const connection  = require('../database.js');
 
 class Customer {
-    constructor (id, degree, linkedin_link){
+    constructor (id, rating, lastLogin){
         this.id = id
-        this.degree = degree
-        this.linkedin_link = linkedin_link
+        this.rating = rating
+        this.lastLogin = lastLogin
+    }
+    getCustomer(id,handler){
+      connection.query('SELECT * FROM Customer WHERE customer_id = ? ', [id], (err, rows) => {
+        if(!err) {
+          const customer = rows[0]
+          const response = new Customer(customer.customer_id,customer.rating,customer.last_date_log_on)
+          handler(response,null)
+        } else {
+          console.log(err);
+          handler(null,err)
+        } 
+      })
     }
     addCustomer(customer,handler) { 
       connection.query('INSERT INTO Customer SET ? ', customer, (err, rows) => {
