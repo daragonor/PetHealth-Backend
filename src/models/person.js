@@ -1,7 +1,7 @@
 const connection  = require('../database.js');
 
 class Person {
-    constructor (id, last_name, name, phone, address,dni){
+    constructor (id, name, last_name, phone, address,dni){
         this.id = id
         this.name = name
         this.phone = phone
@@ -13,7 +13,13 @@ class Person {
       connection.query('SELECT * FROM Person WHERE person_id = ? ', [id], (err, rows) => {
         if(!err) {
           const person = rows[0]
-          const response = new Person(person.person_id,person.name,person.last_name, person.phone,person.dni,person.address)
+          const response = new Person(
+            person.person_id,
+            person.name,
+            person.last_name, 
+            person.phone,
+            person.address,
+            person.dni)
           handler(response,null)
         } else {
           console.log(err);
