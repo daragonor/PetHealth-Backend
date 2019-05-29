@@ -6,7 +6,7 @@ const helpers = require('../lib/helpers')
 const apptAPI = require('../models/appt.js');
 
 router.get('/user/:userId/appts',helpers.verifyToken, (req, res) => {
-    apptAPI.getAppts(req.params.userId,req.body.userable_type,(appts,err) => {
+    apptAPI.getApptsByUserId(req.params.userId,req.body.userable_type,(appts,err) => {
         if (err){}
         let response = {
             status:"ok",
@@ -16,7 +16,5 @@ router.get('/user/:userId/appts',helpers.verifyToken, (req, res) => {
         res.json(response)
     });
 });
-
-router.post
 
 module.exports = router;

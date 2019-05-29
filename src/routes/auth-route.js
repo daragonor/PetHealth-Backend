@@ -80,8 +80,8 @@ router.post('/login', (req,res) => {
                 const validPassword = await helpers.matchPassword(password, user.password)
                 if (validPassword) {
                     response.data.access_token = jwt.sign({ id:  user.id }, helpers.secret_key)
-                    response.data.user = user
                     response.message = "Login succesful."
+                    response.data.user = user
                     switch (user.userable_type) {
                         case 0:
                             veterinaryAPI.getVeterinary(user.id,(veterinary,err) => {

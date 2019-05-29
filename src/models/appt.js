@@ -15,32 +15,39 @@ class Appt {
         this.vet_id = vet_id
         this.veterinary_id = veterinary_id 
       }
-    getAppts(userId,userableType,handler) { 
-        var appts = []
-        connection.query('SELECT * FROM Appointment', (err, rows, fields) => {
-            if(!err) {
-              rows.forEach(appt => {
-                appts.push(new Appt(
-                  appt.appointment_id,
-                  appt.appointment_date,
-                  appt.description,
-                  appt.status,
-                  appt.start_time,
-                  appt.end_time,
-                  appt.register_date,
-                  appt.pet_photo,
-                  appt.pet_id,
-                  appt.veterinarian_id,
-                  appt.veterinary_id
-                  ))
-              });
-                
-              handler(appts,null)
-            } else {
-              console.log(err);
-              handler(null,err)
-            }
-          });  
+    getApptsByUserId(userId,userableType,handler) { 
+      var appts = []
+      var query = ''
+      if (userableType == 0){
+        query = 'SELECT * FROM Appointment WHERE veterinary_id = ? '
+      } else if (userableType == 1){
+        query = 'SELECT * FROM Appointment WHERE veterinarian_id = ? '
+      } else if (userableType == 2){
+        query = 'SELECT * FROM Appointment JOIN Pet ON Appointment.pet_id = Pet.pet_id WHERE owner_id = ? '
+      }
+      connection.query(query, [userId],(err, rows, fields) => {
+        if(!err) {
+          rows.forEach(appt => {
+            appts.push(new Appt(
+              appt.appointment_id,
+              appt.appointment_date,
+              appt.description,
+              appt.status,
+              appt.start_time,
+              appt.end_time,
+              appt.register_date,
+              appt.pet_photo,
+              appt.pet_id,
+              appt.veterinarian_id,
+              appt.veterinary_id
+            ))
+          });
+          handler(appts,null)
+        } else {
+          console.log(err);
+          handler(null,err)
+        }
+      });  
     }
   }
   
