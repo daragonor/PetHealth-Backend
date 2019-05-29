@@ -14,6 +14,7 @@ app.use('/api',require('./routes/home-route'));
 app.use('/api',require('./routes/appt-route'));
 app.use('/api',require('./routes/auth-route'));
 app.use('/api',require('./routes/pets-route'));
+app.use('/api',require('./routes/contract-route'));
 
 
 // Starting the server

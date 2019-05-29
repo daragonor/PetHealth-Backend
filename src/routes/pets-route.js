@@ -5,7 +5,7 @@ const helpers = require('../lib/helpers');
 
 const petAPI = require('../models/pet.js');
 
-router.get('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
+router.get('/customers/:userId/pets',helpers.verifyToken,(req,res)=>{
             let userId = req.params.userId;
             petAPI.getAll(userId,(pets,err)=>{
                 let response = {
@@ -15,7 +15,8 @@ router.get('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
                 };
                 if(err){
                     response.status = "Error";
-                    response.message = err;
+                    response.message = "Unable to retrieve pets";
+                    console.log(err);
                 }else{
                     response.status = "ok";
                     response.message = "Pets where retrieved successfuly.";
@@ -24,7 +25,7 @@ router.get('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
             })
 });
 
-router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
+router.get('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
             let id = req.params.id;
             let userId = req.params.userId;
             petAPI.getPet(userId,id,(pet,err)=>{
@@ -35,7 +36,8 @@ router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 };
                 if(err){
                     response.status = "Error";
-                    response.message = err;
+                    response.message = "Unable to retrieve Pet";
+                    console.log(err);
                 }else{
                     response.status = "ok";
                     response.message = "Pets where retrieved successfuly.";
@@ -44,7 +46,7 @@ router.get('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
             });
 });
 
-router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
+router.post('/customers/:userId/pets',helpers.verifyToken,(req,res)=>{
             console.log(req.body);
             let userId = parseInt(req.params.userId);
             const {name, description,race,birth_date,status,image_url} = req.body;
@@ -57,7 +59,8 @@ router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
                 }
                 if(err){
                     response.status = "Error";
-                    response.message = err;
+                    response.message = "Unable to add Pet";
+                    console.log(err);
                 }
                 else{
                     response.status = "Ok";
@@ -67,7 +70,7 @@ router.post('/user/:userId/pets',helpers.verifyToken,(req,res)=>{
             });
 });
 
-router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
+router.put('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
             let userId = req.params.userId;
             let petId = req.params.id;
             const {name, description,race,birth_date,status,image_url} = req.body;
@@ -80,7 +83,8 @@ router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 }
                 if(err){
                     response.status = "Error";
-                    response.message = err;
+                    response.message = "Unable to edit Pet";
+                    console.log(err);
                 }
                 else{
                     response.status = "ok";
@@ -90,7 +94,7 @@ router.put('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
             });
 });
 
-router.delete('/user/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
+router.delete('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
             let userId = req.params.userId;
             let petId = req.params.id;
             petAPI.deletePet(userId,petId,(err)=>{
