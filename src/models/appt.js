@@ -16,7 +16,14 @@ class Appt {
       }
     getApptsDataByUserId(userId,userableType,handler) { 
       var response = []
-      var query = 'SELECT Appointment.*,Pet.*,Person.name as vet_name,Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location FROM Appointment JOIN Pet ON Appointment.pet_id = Pet.pet_id JOIN Person ON Appointment.veterinarian_id = Person.person_id JOIN Veterinary ON Appointment.veterinary_id = Veterinary.veterinary_id '
+      var query = 'SELECT Appointment.*,' 
+      query += 'Pet.name, Pet.description as pet_desc, Pet.race, Pet.birth_date, Pet.status as pet_status, Pet.image_url, Pet.owner_id,'
+      query += 'Person.name as vet_name,'
+      query += 'Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location '
+      query += 'FROM Appointment '
+      query += 'JOIN Pet ON Appointment.pet_id = Pet.pet_id '
+      query += 'JOIN Person ON Appointment.veterinarian_id = Person.person_id '
+      query += 'JOIN Veterinary ON Appointment.veterinary_id = Veterinary.veterinary_id '
       if (userableType == 0){
         query += 'WHERE veterinary_id = ? '
       } else if (userableType == 1){
@@ -43,10 +50,10 @@ class Appt {
               ),
               pet:{
                 name : appt.name,
-                description : appt.description,
+                description : appt.pet_desc,
                 race : appt.race,
                 birth_date : appt.birth_date,
-                status : appt.status,
+                status : appt.pet_status,
                 image_url : appt.image_url,
                 owner_id : appt.owner_id
               },
