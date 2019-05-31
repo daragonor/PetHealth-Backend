@@ -47,7 +47,7 @@ router.get('/veterinaries/:veterinaryId/contracts',helpers.verifyToken,(req,res)
 
 router.get('/veterinarians/:veterinarianId/contracts',helpers.verifyToken,(req,res)=>{
     const veterinarianId = req.params.veterinarianId;
-    contractAPI.getVeterinaryContracts(veterinarianId,(contracts,err)=>{
+    contractAPI.getVeterinarianContracts(veterinarianId,(contracts,err)=>{
         let response = {
             status:"",
             message:"",
