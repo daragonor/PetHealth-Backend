@@ -4,15 +4,19 @@ const jwt = require('jsonwebtoken');
 const helpers = require('../lib/helpers')
 
 const apptAPI = require('../models/appt.js');
+const petAPI = require('../models/pet')
 
-router.get('/user/:userId/appts',helpers.verifyToken, (req, res) => {
-    apptAPI.getApptsByUserId(req.params.userId,req.body.userable_type,(appts,err) => {
+let response = {
+    status:"ok",
+    message:"Appointments where retrieved successfuly.",
+    data: {}
+} 
+
+router.post('/user/:userId/appts',helpers.verifyToken, (req, res) => {
+    
+    apptAPI.getApptsDataByUserId(req.params.userId,req.body.userable_type,(apptsData,err) => {
         if (err){}
-        let response = {
-            status:"ok",
-            message:"Appointments where retrieved successfuly.",
-            data: appts
-        } 
+        response.data = apptsData
         res.json(response)
     });
 });
