@@ -41,7 +41,7 @@ router.get('/veterinaries/:veterinaryId/contracts',helpers.verifyToken,(req,res)
             response.status = "Ok";
             response.message = "Retrieved contracts successfully";
         }
-        res.status(200),send(response);
+        res.status(200).send(response);
     });
 });
 
@@ -61,7 +61,7 @@ router.get('/veterinarians/:veterinarianId/contracts',helpers.verifyToken,(req,r
             response.status = "Ok";
             response.message = "Retrieved contracts successfully";
         }
-        res.status(200),send(response);
+        res.status(200).send(response);
     });
 });
 
