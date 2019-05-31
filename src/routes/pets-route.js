@@ -88,7 +88,7 @@ router.put('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 }
                 else{
                     response.status = "ok";
-                    response.status = "Pet updated successfully";
+                    response.message = "Pet updated successfully";
                 }
                 res.status(200).send(response);
             });
@@ -108,7 +108,7 @@ router.delete('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 }
                 else{
                     response.status = "ok";
-                    response.status = "Pet deleted successfully";
+                    response.message = "Pet deleted successfully";
                 }
                 res.status(200).send(response);
             });
