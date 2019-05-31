@@ -16,7 +16,7 @@ class Appt {
       }
     getApptsDataByUserId(userId,userableType,handler) { 
       var response = []
-      var query = 'SELECT Appointment.*,Pet.*,Person.name as vet_name,Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location FROM Appointment JOIN Pet ON Appointment.pet_id = Pet.pet_id JOIN Person ON Pet.owner_id = Person.person_id JOIN Veterinary ON Appointment.veterinary_id = Veterinary.veterinary_id '
+      var query = 'SELECT Appointment.*,Pet.*,Person.name as vet_name,Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location FROM Appointment JOIN Pet ON Appointment.pet_id = Pet.pet_id JOIN Person ON Appointment.veterinarian_id = Person.person_id JOIN Veterinary ON Appointment.veterinary_id = Veterinary.veterinary_id '
       if (userableType == 0){
         query += 'WHERE veterinary_id = ? '
       } else if (userableType == 1){
@@ -59,20 +59,6 @@ class Appt {
                 location: appt.location
               }
             })
-            /*
-            appts.push(new Appt(
-              appt.appointment_id,
-              appt.appointment_date,
-              appt.description,
-              appt.status,
-              appt.start_time,
-              appt.end_time,
-              appt.register_date,
-              appt.pet_photo,
-              appt.pet_id,
-              appt.veterinarian_id,
-              appt.veterinary_id
-            ))*/
           });
           handler(response,null)
         } else {
