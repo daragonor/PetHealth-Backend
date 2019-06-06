@@ -1,4 +1,5 @@
 const connection  = require('../database.js');
+const helpers = require('../lib/helpers');
 
 class Veterinary {
     constructor (id, social_url_id, name, phone, location,opening_hours){
@@ -36,6 +37,34 @@ class Veterinary {
             handler(null,err)
         } 
       })
+    }
+
+    getCloseVeterinaries(location,radius,handler){
+      let veterinaries = [];
+      connection.query('SELECT * FROM Veterinary',(err,rows)=>{
+        if(err){
+          console.log(err);
+          handler(null,err);
+        }else{
+          rows.forEach(vet => {
+            let locationVet = {
+              lat: vet.latitude,
+              long: vet.longitude
+            }
+            if(helpers.distance(location,locationVet)<=radius){
+              veterinaries.push(new Veterinary(
+                vet.id,
+                vet.social_url_id,
+                vet.name,
+                vet.phone,
+                vet.location,
+                vet.opening_hours
+              ));
+            }
+          });
+          handler(veterinaries,null);
+        }
+      });
     }
 }
 
