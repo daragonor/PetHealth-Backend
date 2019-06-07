@@ -1,7 +1,7 @@
 const connection  = require('../database.js');
 
 class Appt {
-    constructor ( id, appt_date, desc, status, start_t, end_t, register_date, pet_photo, pet_id, vet_id, veterinary_id ){
+    constructor ( id, appt_date, desc, status, start_t, end_t, register_date, pet_photo, pet_id, vet_id, veterinary_id,type ){
         this.id = id;
         this.appt_date = appt_date
         this.desc = desc
@@ -13,6 +13,7 @@ class Appt {
         this.pet_id = pet_id
         this.vet_id = vet_id
         this.veterinary_id = veterinary_id 
+        this.type = type
       }
     getApptsDataByUserId(userId,userableType, handler) { 
       var response = []
@@ -48,7 +49,8 @@ class Appt {
                 appt.pet_photo,
                 appt.pet_id,
                 appt.veterinarian_id,
-                appt.veterinary_id
+                appt.veterinary_id,
+                appt.type
               ),
               pet:{
                 name : appt.name,
