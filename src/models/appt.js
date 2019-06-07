@@ -1,7 +1,7 @@
 const connection  = require('../database.js');
 
 class Appt {
-    constructor ( id, appt_date, desc, status, start_t, end_t, register_date, pet_photo, preescription, pet_id, vet_id, veterinary_id ){
+    constructor ( id, appt_date, desc, status, start_t, end_t, register_date, pet_photo, pet_id, vet_id, veterinary_id ){
         this.id = id;
         this.appt_date = appt_date
         this.desc = desc
@@ -14,7 +14,7 @@ class Appt {
         this.vet_id = vet_id
         this.veterinary_id = veterinary_id 
       }
-    getApptsDataByUserId(userId,userableType,handler) { 
+    getApptsDataByUserId(userId,userableType, handler) { 
       var response = []
       var query = 'SELECT Appointment.*,' 
       query += 'Pet.name, Pet.description as pet_desc, Pet.race, Pet.birth_date, Pet.status as pet_status, Pet.image_url, Pet.owner_id,'
@@ -25,12 +25,14 @@ class Appt {
       query += 'JOIN Person ON Appointment.veterinarian_id = Person.person_id '
       query += 'JOIN Veterinary ON Appointment.veterinary_id = Veterinary.veterinary_id '
       if (userableType == 0){
-        query += 'WHERE veterinary_id = ? '
+        query += 'WHERE veterinary_id = ' + userId
       } else if (userableType == 1){
-        query += 'WHERE veterinarian_id = ? '
+        query += 'WHERE veterinarian_id = ' + userId
       } else if (userableType == 2){
-        query += 'WHERE owner_id = ? '
+        query += 'WHERE owner_id = ' + userId
       }
+      
+      
       connection.query(query, [userId],(err, rows, fields) => {
         if(!err) {
           rows.forEach(appt => {
@@ -55,7 +57,7 @@ class Appt {
                 birth_date : appt.birth_date,
                 status : appt.pet_status,
                 image_url : appt.image_url,
-                owner_id : appt.owner_id
+                owner_id : appt.owner_id,
               },
               veterinarian: {
                 name: appt.vet_name
@@ -66,13 +68,13 @@ class Appt {
                 location: appt.location
               }
             })
-          });
+          })
           handler(response,null)
         } else {
           console.log(err);
           handler(null,err)
         }
-      });  
+      }); 
     }
   }
   
