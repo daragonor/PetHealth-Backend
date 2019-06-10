@@ -10,8 +10,8 @@ router.get('/veterinaries',helpers.verifyToken,(req,res)=>{
     const location = {latitude,longitude};
     veterinaryAPI.getCloseVeterinaries(location,(data,err)=>{
         let response = {
-            status = "",
-            message = "",
+            status: "",
+            message: "",
             data: data
         };
         if(err){
@@ -30,9 +30,9 @@ router.get('/veterinaries',helpers.verifyToken,(req,res)=>{
 router.get('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
     let veterinaryId = req.params.veterinaryId;
     veterinaryAPI.getVeterinary(veterinaryId,(vet,err)=>{
-        let repsonse = {
+        let response = {
             status: "",
-            message = "",
+            message: "",
             data: vet
         }
         if(err){
@@ -42,7 +42,7 @@ router.get('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
             res.status(500).send(response);
         }else{
             response.status = "Ok";
-            response.message = "Veterinary retrieve successfully";
+            response.message = "Veterinary retrieved successfully";
             res.status(200).send(response);
         }
     });

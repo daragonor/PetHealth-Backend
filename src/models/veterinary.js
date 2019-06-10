@@ -15,16 +15,18 @@ class Veterinary {
     getVeterinary(id,handler){
       connection.query('SELECT * FROM Veterinary WHERE veterinary_id = ? ', [id], (err, rows) => {
         if(!err) {
-          const veterinary = rows[0];
-          const response = new Veterinary(
-            veterinary.veterinary_id,
-            veterinary.social_url_id,
-            veterinary.name,
-            veterinary.phone,
-            veterinary.location,
-            veterinary.opening_hours,
-            veterinary.latitude,
-            veterinary.longitude)
+          let response;
+          rows.forEach( veterinary =>{
+            response = new Veterinary(
+              veterinary.veterinary_id,
+              veterinary.social_url_id,
+              veterinary.name,
+              veterinary.phone,
+              veterinary.location,
+              veterinary.opening_hours,
+              veterinary.latitude,
+              veterinary.longitude)
+          });
           handler(response,null)
         } else {
           console.log(err);
