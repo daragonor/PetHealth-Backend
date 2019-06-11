@@ -47,21 +47,20 @@ class Veterinary {
 
     getCloseVeterinaries(location,handler){
       let dataVeterinaries = [];
-      //let veterinaries = [];
       connection.query('SELECT * FROM Veterinary',(err,rows)=>{
         if(err){
           console.log(err);
           handler(null,err);
         }else{
-          const limit = 1;
+          const limit = 5;
           rows.forEach(vet => {
             let dataVet = {
               veterinary: null,
               distance: 0
             }
             let locationVet = {
-              lat: vet.latitude,
-              long: vet.longitude
+              latitude: vet.latitude,
+              longitude: vet.longitude
             }
             dataVet.veterinary = new Veterinary(
               vet.id,
@@ -75,18 +74,6 @@ class Veterinary {
             );
             dataVet.distance = helpers.distance(location,locationVet);
             dataVeterinaries.push(dataVet);
-            /*veterinaries.push(new Veterinary(
-              vet.id,
-              vet.social_url_id,
-              vet.name,
-              vet.phone,
-              vet.location,
-              vet.opening_hours,
-              vet.latitude,
-              vet.longitude
-            ));*/
-            
-            //dataVeterinary.distance.push(helpers.distance(location,locationVet));
           });
           dataVeterinaries.sort((data1,data2)=>parseFloat(data1.distance)-parseFloat(data2.distance));
           let resData = dataVeterinaries.slice(0,limit);

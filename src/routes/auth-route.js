@@ -18,7 +18,7 @@ router.post('/signup',async (req,res) => {
         data: {}
     }
     const { username, password, mail, photo, userable_type, name, last_name, dni, phone,address,
-        linkedin_link, degree, location, opening_hours, website_url, youtube_url, twitter_url } = req.body;
+        linkedin_link, degree, location, opening_hours, website_url, youtube_url, twitter_url,latitude,longitude } = req.body;
     let user = {username,password,mail,photo,userable_type};
 
     user.password = await helpers.encryptPassword(password);
@@ -29,7 +29,7 @@ router.post('/signup',async (req,res) => {
             case 0:
                 let  socialURL = {website_url, youtube_url, twitter_url}
                 socialURLAPI.addSocialURL(socialURL,(socialURLId,err) => {
-                    let veterinary = {veterinary_id : userId, social_url_id : socialURLId, name, phone, location, opening_hours}
+                    let veterinary = {veterinary_id : userId, social_url_id : socialURLId, name, phone, location, opening_hours,latitude,longitude}
                     veterinaryAPI.addVeterinary(veterinary,(veterinaryId, err) => {
                         response.data.user = user
                         response.message = "Veterinary signup succesful."

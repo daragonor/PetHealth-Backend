@@ -12,18 +12,17 @@ function degreesToRadians(degrees){
 helpers.distance = (locationIni,locationFin) => {
   var earthRadiusKm = 6371;
 
-  var dLat = degreesToRadians(locationFin.lat-locationIni.lat);
-  var dLon = degreesToRadians(locationFin.long-locationIni.long);
+  var dLat = degreesToRadians(locationFin.latitude-locationIni.latitude);
+  var dLon = degreesToRadians(locationFin.longitude-locationIni.longitude);
 
-  lat1 = degreesToRadians(locationIni.lat);
-  lat2 = degreesToRadians(locationFin.lat);
+  lat1 = degreesToRadians(locationIni.latitude);
+  lat2 = degreesToRadians(locationFin.latitude);
 
   var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
           Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   let distance = earthRadiusKm * c;
-  console.log("Distance: " + distance);
-  return distance;
+  return distance; 
 }
 
 helpers.encryptPassword = async (password) => {
