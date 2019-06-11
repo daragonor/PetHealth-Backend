@@ -20,7 +20,7 @@ class Appt {
       var query = 'SELECT Appointment.*,' 
       query += 'Pet.name, Pet.description as pet_desc, Pet.race, Pet.birth_date, Pet.status as pet_status, Pet.image_url, Pet.owner_id,'
       query += 'Person.name as vet_name,'
-      query += 'Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location '
+      query += 'Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location, Veterinary.latitude, Veterinnary.longitude'
       query += 'FROM Appointment '
       query += 'JOIN Pet ON Appointment.pet_id = Pet.pet_id '
       query += 'JOIN Person ON Appointment.veterinarian_id = Person.person_id '
@@ -67,7 +67,9 @@ class Appt {
               veterinary:{
                 name: appt.veterinary_name,
                 phone: appt.phone,
-                location: appt.location
+                location: appt.location,
+                latitude: appt.latitude,
+                longitude: appt.longitude
               }
             })
           })

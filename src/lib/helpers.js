@@ -4,6 +4,28 @@ const helpers = {};
 
 helpers.secret_key = "secretkey23456"
 
+function degreesToRadians(degrees){
+  return degrees*Math.PI/180;
+}
+
+
+helpers.distance = (locationIni,locationFin) => {
+  var earthRadiusKm = 6371;
+
+  var dLat = degreesToRadians(locationFin.lat-locationIni.lat);
+  var dLon = degreesToRadians(locationFin.long-locationIni.long);
+
+  lat1 = degreesToRadians(locationIni.lat);
+  lat2 = degreesToRadians(locationFin.lat);
+
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  let distance = earthRadiusKm * c;
+  console.log("Distance: " + distance);
+  return distance;
+}
+
 helpers.encryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
