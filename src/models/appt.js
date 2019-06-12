@@ -20,11 +20,13 @@ class Appt {
       var query = 'SELECT Appointment.*,' 
       query += 'Pet.name, Pet.description as pet_desc, Pet.race, Pet.birth_date, Pet.status as pet_status, Pet.image_url, Pet.owner_id,'
       query += 'Person.name as vet_name,'
-      query += 'Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location, Veterinary.latitude, Veterinary.longitude '
+      query += 'Veterinary.name as veterinary_name,Veterinary.phone, Veterinary.location, Veterinary.latitude, Veterinary.longitude, '
+      query += 'User.photo '
       query += 'FROM Appointment '
       query += 'JOIN Pet ON Appointment.pet_id = Pet.pet_id '
       query += 'JOIN Person ON Appointment.veterinarian_id = Person.person_id '
       query += 'JOIN Veterinary ON Appointment.veterinary_id = Veterinary.veterinary_id '
+      query += 'JOIN User ON Veterinary.veterinary_id = User.user_id '
       if (userableType == 0){
         query += 'WHERE veterinary_id = ' + userId
       } else if (userableType == 1){
@@ -65,6 +67,7 @@ class Appt {
                 name: appt.vet_name
               },
               veterinary:{
+                logo: appt.photo,
                 name: appt.veterinary_name,
                 phone: appt.phone,
                 location: appt.location,
