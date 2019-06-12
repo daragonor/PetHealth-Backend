@@ -28,6 +28,25 @@ class Vet {
         } 
       })
     }
+
+    updateVet(vetId,newData,handler){
+      connection.query('UPDATE Veterinarian SET ?  WHERE veterinarian_id = ?',[newData.vetData,vetId],(err,result)=>{
+        if(!err){
+          if(newData.userData!=null){
+            connection.query('UPDATE User SET ? WHERE user_id = ?',[newData.userData,vetId],(err,result)=>{
+              if(!err){
+                handler(null);
+              }else{
+                console.log(err);
+                handler(err);
+              }
+            });
+          }
+        }else{
+
+        }
+      });
+    }
 }
 
 module.exports = new Vet()

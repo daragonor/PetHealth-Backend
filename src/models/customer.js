@@ -28,6 +28,25 @@ class Customer {
         } 
       })
     }
+    updateCustomer(customerId,newData,handler){
+      connection.query('UPDATE Person Set ? WHERE person_id = ?',[newData.personData,customerId],(err,result)=>{
+        if(!err){
+          if(newData.personData!=null){
+          connection.query('UPDATE User Set ?  WHERE user_id = ?',[newData.userData,customerId],(err,result)=>{
+            if(!err){
+              handler(null);
+            }else{
+              console.log(err);
+              handler(err);
+            }
+          });
+          }
+        }else{
+          console.log(err);
+          handler(err);
+        }
+      });
+    }
 }
 
 module.exports = new Customer()

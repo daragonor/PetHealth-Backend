@@ -81,6 +81,28 @@ class Veterinary {
         }
       });
     }
+
+    updateVeterinary(vetId,newData,handler){
+      connection.query('UPDATE Veterinary SET ? WHERE veterinary_id = ?',[newData.vetData,vetId],(err,result)=>{
+        if(!err){
+          if(newData.UserData!=null){
+            connection.query('UPDATE User SET ? WHERE user_id = ?'[newData.userData,vetId],(err,result)=>{
+              if(!err){
+                handler(null);
+              }else{
+                console.log(err);
+                handler(err);
+              }
+            });
+          }
+          
+        }else{
+          console.log(err);
+          handler(err);
+        }
+      });
+    }
+
 }
 
 module.exports = new Veterinary()
