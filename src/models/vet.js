@@ -9,7 +9,11 @@ class Vet {
     getVet(id,handler){
       connection.query('SELECT * FROM Veterinarian WHERE veterinarian_id = ? ', [id], (err, rows) => {
         if(!err) {
-          const vet = rows[0]
+          //const vet = rows[0]
+          let vet;
+          rows.array.forEach(veterinarian => {
+            vet = veterinarian;
+          });
           const response = new Vet(vet.vet_id,vet.degree,vet.linkedin_link)
           handler(response,null)
         } else {

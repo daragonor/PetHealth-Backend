@@ -12,7 +12,11 @@ class Person {
     getPerson(id,handler){
       connection.query('SELECT * FROM Person WHERE person_id = ? ', [id], (err, rows) => {
         if(!err) {
-          const person = rows[0]
+          //const person = rows[0]
+          let person;
+          rows.array.forEach(element => {
+            person = element;
+          });
           const response = new Person(
             person.person_id,
             person.name,
