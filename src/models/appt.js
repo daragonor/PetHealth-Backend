@@ -83,6 +83,18 @@ class Appt {
         }
       }); 
     }
+
+    addAppts(appt_data,handler){
+      connection.query('INSERT INTO Appointment SET ? ',[appt_data],(err,result)=>{
+        if(err){
+          console.log(err);
+          handler(err);
+        }else{ 
+          handler(null);
+        }
+
+      });
+    }
   }
   
 module.exports = new Appt()
