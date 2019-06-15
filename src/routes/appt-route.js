@@ -41,6 +41,30 @@ router.post('/user/:userId/appts',helpers.verifyToken, (req, res) => {
           }
 
     });
+
+});
+
+router.post('/veterinaries/:veterinary_id/appointments',helpers.verifyToken,(req,res)=>{
+    const {appointment_date,description,status,start_time,end_time,register_date,
+        type,pet_photo,pet_id,veterinarian_id} = req.body;
+    const veterinary_id = req.params.veterinary_id;
+    const newAppointment = {appointment_date,description,status,start_time,end_time,register_date,type,pet_photo,pet_id,veterinarian_id,veterinary_id};
+    apptAPI.addAppts(newAppointment,(err)=>{
+        let response = {
+            status:"",
+            message:""
+        };
+        if(err){
+            console.log(err);
+            response.status = "Error";
+            response.message = "Unable to add appointment";
+            res.status(500).send(response);
+        }else{
+            response.status = "Ok";
+            response.message = "Appointmet added successfully";
+            res.status(200).send(response);
+        }
+    });
 });
 
 module.exports = router;
