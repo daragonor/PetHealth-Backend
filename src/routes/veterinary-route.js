@@ -6,7 +6,8 @@ const helpers = require('../lib/helpers');
 const veterinaryAPI = require('../models/veterinary.js');
 
 router.get('/veterinaries',helpers.verifyToken,(req,res)=>{
-    const {latitude,longitude} = req.body;
+    const latitude = req.query.latitude;
+    const longitude = req.query.longitude;
     const location = {latitude,longitude};
     veterinaryAPI.getCloseVeterinaries(location,(data,err)=>{
         let response = {
