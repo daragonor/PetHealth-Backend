@@ -1,4 +1,5 @@
 const connection  = require('../database.js');
+const helpers = require('../lib/helpers')
 
 class Vet {
     constructor (id, degree, linkedin){
@@ -6,15 +7,32 @@ class Vet {
         this.degree = degree
         this.linkedin = linkedin
     }
-    getVet(id,handler){
-      connection.query('SELECT * FROM Veterinarian WHERE veterinarian_id = ? ', [id], (err, rows) => {
+    async getVet(id,handler){
+      let query = 'SELECT Veterinarian.veterinarian_id,Veterinarian.degree,Veterinarian.linkedin_link, ';
+      query += 'Person.name,Person.last_name, ';
+      query += 'User.mail,User.photo ';
+      query += 'FROM Veterinarian ';
+      query += 'JOIN Person ON Veterinarian.veterinarian_id = Person.person_id '
+      query += 'JOIN User ON Veterinarian.veterinarian_id = User.user_id '
+      query += 'WHERE veterinarian_id = ?';
+      await connection.query(query, [id], (err, rows) => {
         if(!err) {
-          //const vet = rows[0]
           let vet;
-          rows.array.forEach(veterinarian => {
+          helpers.ForEach(rows,(veterinarian)=>{
             vet = veterinarian;
           });
-          const response = new Vet(vet.vet_id,vet.degree,vet.linkedin_link)
+          /*rows.forEach(veterinarian => {
+            vet = veterinarian;
+          });*/
+          const response = {
+            id: vet.veterinarian_id,
+            name: vet.name,
+            last_name: vet.last_name,
+            email: vet.mail,
+            photo: vet.photo,
+            degree:vet.degree,
+            linkedin_link: vet.linkedin_link
+          }//new Vet(vet.vet_id,vet.degree,vet.linkedin_link)
           handler(response,null)
         } else {
           console.log(err);

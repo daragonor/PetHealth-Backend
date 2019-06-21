@@ -14,7 +14,7 @@ class Person {
         if(!err) {
           //const person = rows[0]
           let person;
-          rows.array.forEach(element => {
+          rows.forEach(element => {
             person = element;
           });
           const response = new Person(

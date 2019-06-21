@@ -58,9 +58,21 @@ class Veterinary {
               veterinary: null,
               distance: 0
             }
+            connection.query('SELECT photo from User WHERE user_id = ?',[vet.veterinary_id],(err,rows)=>{
+              if(err){
+                console.log(err);
+                handler(err);
+              }else{
+//TODO
+              }
+            });
+            
             let locationVet = {
               latitude: vet.latitude,
               longitude: vet.longitude
+            }
+            dataVet.veterinary = {
+
             }
             dataVet.veterinary = new Veterinary(
               vet.id,

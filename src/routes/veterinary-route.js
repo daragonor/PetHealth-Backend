@@ -51,6 +51,7 @@ router.get('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
 
 router.put('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
     let veterinaryId = req.params.veterinaryId;
+    const {bio,name,location,opening_hours,latitude,longitude} = req.body;
     veterinaryAPI.updateVeterinary(veterinaryId,newData,(err)=>{
         let response = {
             status:"",

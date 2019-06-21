@@ -9,7 +9,7 @@ class News {
     }
     getNews(handler) { 
       var newsArr = []
-      connection.query('SELECT * FROM News', (err, rows, fields) => {
+      connection.query('SELECT * FROM News', (err, rows) => {
           if(!err) {
             rows.forEach(news => {
               newsArr.push(new News(

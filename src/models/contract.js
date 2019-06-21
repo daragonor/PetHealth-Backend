@@ -1,4 +1,6 @@
 const connection  = require('../database.js');
+const veterinarianAPI = require('./vet.js');
+const helpers = require('../lib/helpers')
 
 class Contract{
     constructor(id,start_date,end_date,request,veterinary_id,veterinarian_id){
@@ -12,7 +14,7 @@ class Contract{
 
     getContract(contractId,handler){
         var contract = null;
-        connection.query('SELECT *  FROM Contract WHERE contract_id = ?',[contractId],(err,rows,fields) => {
+        connection.query('SELECT *  FROM Contract WHERE contract_id = ?',[contractId],(err,rows) => {
             if(err){
                 console.log(err);
                 handler(null,err);
@@ -34,21 +36,39 @@ class Contract{
 
     getVeterinaryContracts(veterinaryId,handler){
         var contracts = [];
-        connection.query('SELECT * FROM Contract WHERE veterinary_id = ?',[veterinaryId],(err,rows,fields) =>{
+        connection.query('SELECT * FROM Contract WHERE veterinary_id = ?',[veterinaryId],async (err,rows) =>{
             if(err){
                 console.log(err);
                 handler(null,err);
             }else{
-                rows.forEach(contract => {
-                    contracts.push( new Contract(
-                        contract.contract_id,
-                        contract.start_date,
-                        contract.end_date,
-                        contract.request,
-                        contract.veterinary_id,
-                        contract.veterinarian_id
-                    ));
+                await helpers.ForEach(rows,async (contract)=>{
+                    await veterinarianAPI.getVet(contract.veterinarian_id,(vet,error)=>{
+                        if(!error){
+                            contracts.push( {
+                                contract: new Contract(
+                                    contract.contract_id,
+                                    contract.start_date,
+                                    contract.end_date,
+                                    contract.request,
+                                    contract.veterinary_id,
+                                    contract.veterinarian_id
+                                ),
+                                veterinarian: {
+                                    name: vet.name,
+                                    last_name:vet.last_name,
+                                    photo: vet.photo
+                                }
+                            });
+                            
+                        }else{
+                            console.log(error);
+                            handler(null,error);
+                        }
+                    });
                 });
+                /*rows.forEach(contract => {
+                    
+                });*/
                 handler(contracts,null);
             }
         });
@@ -56,7 +76,7 @@ class Contract{
 
     getVeterinarianContracts(veterinarianId,handler){
         var contracts = [];
-        connection.query('SELECT * FROM Contract WHERE veterinarian_id = ?',[veterinarianId],(err,rows,fields) =>{
+        connection.query('SELECT * FROM Contract WHERE veterinarian_id = ?',[veterinarianId],(err,rows) =>{
             if(err){
                 console.log(err);
                 handler(null,err);

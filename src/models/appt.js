@@ -36,7 +36,7 @@ class Appt {
       }
       
       
-      connection.query(query, [userId],(err, rows, fields) => {
+      connection.query(query, [userId],(err, rows) => {
         if(!err) {
           rows.forEach(appt => {
             response.push({
