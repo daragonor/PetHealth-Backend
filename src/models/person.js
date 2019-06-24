@@ -41,6 +41,17 @@ class Person {
         } 
       })
     }
+
+    updatePerson(personId,person,handler){
+      connection.query('UPDATE Person Set ? WHERE person_id = ?',[person,personId],(err,rows)=>{
+        if(err){
+          console.log(err);
+          handler(err);
+        }else{
+          handler(null);
+        }
+      });
+    }
 }
 
 module.exports = new Person()

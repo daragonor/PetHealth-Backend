@@ -1,5 +1,6 @@
 const connection  = require('../database.js');
 const helpers = require('../lib/helpers')
+const personAPI = require('./person')
 
 class Vet {
     constructor (id, degree, linkedin){
@@ -55,14 +56,14 @@ class Vet {
       connection.query('UPDATE Veterinarian SET ?  WHERE veterinarian_id = ?',[newData.vetData,vetId],(err,result)=>{
         if(!err){
           if(newData.userData!=null){
-            connection.query('UPDATE User SET ? WHERE user_id = ?',[newData.userData,vetId],(err,result)=>{
-              if(!err){
-                handler(null);
-              }else{
+            personAPI.updatePerson(vetId,newData.person,(err)=>{
+              if(err){
                 console.log(err);
                 handler(err);
+              }else{
+                handler(null);
               }
-            });
+            });            
           }
         }else{
 
