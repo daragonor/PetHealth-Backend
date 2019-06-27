@@ -5,7 +5,8 @@ const userAPI = require('../models/user.js');
 
 router.put('/users/:userId/image',helpers.verifyToken,(req,res)=>{
     const userId = req.params.userId;
-    const {image} = req.body
+    const {photo} = req.body;
+    let image = {photo};
     userAPI.updateUser(userId,image,(err)=>{
         let response = {
             status:"",
