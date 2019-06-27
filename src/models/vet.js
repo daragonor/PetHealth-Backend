@@ -54,7 +54,7 @@ class Vet {
     }
 
     updateVet(vetId,newData,handler){
-      connection.query('UPDATE Veterinarian SET ?  WHERE veterinarian_id = ?',[newData.vetData,vetId],(err,result)=>{
+      connection.query('UPDATE Veterinarian SET ?  WHERE veterinarian_id = ?',[newData.vet,vetId],(err,result)=>{
         if(!err){
           if(newData.userData!=null){
             personAPI.updatePerson(vetId,newData.person,(err)=>{
