@@ -93,6 +93,18 @@ class Pet{
             }
         });
     }
+
+    updateImage(petId,userId,image_url,handler){
+        console.log(image_url);
+        connection.query('UPDATE Pet Set ? WHERE pet_id = ? AND owner_id = ?',[image_url,petId,userId],(err,result)=>{
+            if(err){
+                console.log(err);
+                handler(err);
+            }else{
+                handler(null);
+            }
+        });
+    }
 }
 
 module.exports = new Pet();

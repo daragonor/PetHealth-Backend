@@ -94,6 +94,28 @@ router.put('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
             });
 });
 
+router.put('/customers/:userId/pets/:id/image',helpers.verifyToken,(req,res)=>{
+    let userId = req.params.userId;
+    let petId = req.params.id;
+    const {image_url} = req.body;
+    let image = {image_url};
+    petAPI.updateImage(petId,userId,image,(err)=>{
+        let response = {
+            status: "",
+            message: "",
+        }
+        if(err){
+            response.status = "Error";
+            response.message = "Error updating pet image";
+        }
+        else{
+            response.status = "Ok";
+            response.message = "Pet image updated successfully";
+        }
+        res.status(200).send(response);
+    });
+});
+
 router.delete('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
             let userId = req.params.userId;
             let petId = req.params.id;
@@ -104,7 +126,7 @@ router.delete('/customers/:userId/pets/:id',helpers.verifyToken,(req,res)=>{
                 }
                 if(err){
                     response.status = "Error";
-                    response.message = err;
+                    response.message = "Error deleting pet";
                 }
                 else{
                     response.status = "ok";
