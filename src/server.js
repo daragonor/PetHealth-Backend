@@ -19,6 +19,7 @@ app.use('/api',require('./routes/veterinary-route'));
 app.use('/api',require('./routes/user-route'));
 app.use('/api',require('./routes/history-route'));
 app.use('/api',require('./routes/customer-route'));
+app.use('/api',require('./routes/veterinarian-route'));
 
 
 // Starting the server

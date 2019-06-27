@@ -29,33 +29,20 @@ let response = {
 router.get('/users/:userId/appointments',helpers.verifyToken,(req,res)=>{
     const userId = req.params.userId;
     apptAPI.getAppts(userId,(data,err)=>{
-        let response = {
+        let responseD = {
             status: "",
             message: "",
-            data: null,
+            data: data
         };
         if(err){
             console.log(err);
-            response.status = "Error";
-            response.message = "Unable to retrieve Appointments";
-            res.status(500).send(response);
+            responseD.status = "Error";
+            responseD.message = "Unable to retrieve Appointments";
+            res.status(500).send(responseD);
         }else{
-            helpers.ForEach(data,async (appt)=>{
-                await historyAPI.getHistory(appt.appointment.pet_id,(histories,err)=>{
-                    if(err){
-                        console.log(err);
-                        response.status = "Error";
-                        response.message = "Unable to retrieve Appointments";
-                        res.status(500).send(response);
-                    }else{
-                        data.pet.history = histories;
-                        response.status = "OK";
-                        response.message = "Appointments retrieved successfully";
-                        response.data = data;
-                        res.status(200).send(response);
-                    }
-                });
-            });
+            responseD.status = "OK";
+            responseD.message = "Appointments retrieved successfully";
+            res.status(200).send(responseD);
         }
         
     });

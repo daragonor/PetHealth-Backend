@@ -1,24 +1,25 @@
 const connection  = require('../database.js');
+const helpers = require('../lib/helpers');
 
 class ClinicHistory{
-    getHistory(petId,handler){
-        histories = [];
-        let query = 'SELECT ClinicHistory.*  FROM ClinicHistory' ;
-        query += 'join Appointment on Appointment.appointment_id = ClinicHistory.appointment_id';
+    async getHistory(petId,handler){
+        let histories = [];
+        let query = 'SELECT ClinicHistory.*  FROM ClinicHistory ' ;
+        query += 'join Appointment on Appointment.appointment_id = ClinicHistory.appointment_id ';
         query += 'WHERE Appointment.pet_id = ?';
-        connection.query(query,[petId],(err,rows)=>{
+        await connection.query(query,[petId],(err,rows)=>{
             if(err){
                 console.log(err);
                 handler(null,err);
             }else{
-                rows.forEach(history => {
+                helpers.ForEach(rows,(history)=>{
                     let response = {
                         id: history.history_id,
                         motive: history.motive,
                         diagnosis: history.diagnosis,
                         pet_id: history.pet_id
                     }; 
-                    histories.push(response);   
+                    histories.push(response);
                 });
                 handler(histories,null);
             }

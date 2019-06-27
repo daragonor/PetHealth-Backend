@@ -1,4 +1,6 @@
 const connection  = require('../database.js');
+const helpers = require('../lib/helpers');
+const historyAPI = require('../models/clinic_history.js');
 
 class Appt {
     constructor ( id, appt_date, desc, status, start_t, end_t, register_date, pet_photo, pet_id, vet_id, veterinary_id,type ){
@@ -17,46 +19,56 @@ class Appt {
       }
     getAppts(userId,handler){
       let response = [];
-      connection.query('call prcd_appointments(?)',[userId],(err,rows)=>{
+      connection.query('call prcd_appointments(?)',[userId],async (err,rows)=>{
         if(!err){
-          rows.forEach(appt => {
-            response.push({
-              appointment:new Appt(
-                appt.appointment_id,
-                appt.appointment_date,
-                appt.description,
-                appt.status,
-                appt.start_time,
-                appt.end_time,
-                appt.register_date,
-                appt.pet_photo,
-                appt.pet_id,
-                appt.veterinarian_id,
-                appt.veterinary_id,
-                appt.type
-              ),
-              pet:{
-                name : appt.name,
-                description : appt.pet_desc,
-                race : appt.race,
-                birth_date : appt.birth_date,
-                status : appt.pet_status,
-                image_url : appt.image_url,
-                owner_id : appt.owner_id,
-              },
-              veterinarian: {
-                name: appt.vet_name
-              },
-              veterinary:{
-                logo: appt.photo,
-                name: appt.veterinary_name,
-                phone: appt.phone,
-                location: appt.location,
-                latitude: appt.latitude,
-                longitude: appt.longitude
-              }
+          if(rows[0].length>0){
+            await helpers.ForEach(rows[0],async (appt)=>{
+              await historyAPI.getHistory(appt.pet_id,(hist,err)=>{
+                if(err){
+                  console.log(err);
+                  handler(null,err);
+                }else{
+                  response.push({
+                    appointment:new Appt(
+                      appt.appointment_id,
+                      appt.appointment_date,
+                      appt.description,
+                      appt.status,
+                      appt.start_time,
+                      appt.end_time,
+                      appt.register_date,
+                      appt.pet_photo,
+                      appt.pet_id,
+                      appt.veterinarian_id,
+                      appt.veterinary_id,
+                      appt.type
+                    ),
+                    pet:{
+                      name : appt.name,
+                      description : appt.pet_desc,
+                      race : appt.race,
+                      birth_date : appt.birth_date,
+                      status : appt.pet_status,
+                      image_url : appt.image_url,
+                      owner_id : appt.owner_id,
+                      history: hist
+                    },
+                    veterinarian: {
+                      name: appt.vet_name
+                    },
+                    veterinary:{
+                      logo: appt.photo,
+                      name: appt.veterinary_name,
+                      phone: appt.phone,
+                      location: appt.location,
+                      latitude: appt.latitude,
+                      longitude: appt.longitude
+                    }
+                  });
+                }
+              });
             });
-          });
+          }
           handler(response,null);
         }else{
           console.log(err);
