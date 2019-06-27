@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const helpers = require('../lib/helpers')
 const apptAPI = require('../models/appt.js');
+const historyAPI = require('../models/clinic_history.js');
 
 const connection  = require('../database.js');
 const dbcall = (query) => {
@@ -25,6 +26,41 @@ let response = {
     data: {}
 } 
 
+router.get('/users/:userId/appointments',helpers.verifyToken,(req,res)=>{
+    const userId = req.params.userId;
+    apptAPI.getAppts(userId,(data,err)=>{
+        let response = {
+            status: "",
+            message: "",
+            data: null,
+        };
+        if(err){
+            console.log(err);
+            response.status = "Error";
+            response.message = "Unable to retrieve Appointments";
+            res.status(500).send(response);
+        }else{
+            helpers.ForEach(data,async (appt)=>{
+                await historyAPI.getHistory(appt.appointment.pet_id,(histories,err)=>{
+                    if(err){
+                        console.log(err);
+                        response.status = "Error";
+                        response.message = "Unable to retrieve Appointments";
+                        res.status(500).send(response);
+                    }else{
+                        data.pet.history = histories;
+                        response.status = "OK";
+                        response.message = "Appointments retrieved successfully";
+                        response.data = data;
+                        res.status(200).send(response);
+                    }
+                });
+            });
+        }
+        
+    });
+});
+
 router.post('/user/:userId/appts',helpers.verifyToken, (req, res) => {
     
     apptAPI.getApptsDataByUserId(req.params.userId,req.body.userable_type, async(apptsData,err) => {
@@ -32,7 +68,7 @@ router.post('/user/:userId/appts',helpers.verifyToken, (req, res) => {
         response.data = apptsData
         try {
             await asyncForEach(apptsData,async (appt) => {
-                const history = await dbcall('SELECT *  FROM ClinicHistory WHERE pet_id = ' + appt.appointment.pet_id);
+                const history = await dbcall('SELECT *  FROM ClinicHistory WHERE appointment_id = ' + appt.appointment.appointment_id);
                 appt.pet.history = history
             })
             res.json(response)
