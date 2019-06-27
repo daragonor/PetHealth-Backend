@@ -1,5 +1,6 @@
 const connection  = require('../database.js');
-const personAPI = require('./person')
+const personAPI = require('./person');
+const userAPI = require('./user');
 
 class Customer {
     constructor (id, rating, lastLogin){
@@ -30,21 +31,19 @@ class Customer {
       })
     }
     updateCustomer(customerId,newData,handler){
-      connection.query('UPDATE Customer Set ? WHERE customer_id = ?',[newData.personData,customerId],(err,result)=>{
-        if(!err){
-          if(newData.personData!=null){
-            personAPI.updatePerson(customerId,newData.person,(err)=>{
-              if(err){
-                console.log(err);
-                handler(err);
-              }else{
-                handler(null);
-              }
-            });
-          }
-        }else{
+      personAPI.updatePerson(customerId,newData.person,(err)=>{
+        if(err){
           console.log(err);
           handler(err);
+        }else{
+          userAPI.updateUser(customerId,newData.user,(err)=>{
+            if(err){
+              console.log(err);
+              handler(err);
+            }else{
+              handler(null);
+            }
+          });
         }
       });
     }

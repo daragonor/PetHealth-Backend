@@ -47,43 +47,34 @@ class Veterinary {
 
     getCloseVeterinaries(location,handler){
       let dataVeterinaries = [];
-      connection.query('SELECT * FROM Veterinary',(err,rows)=>{
+      connection.query('SELECT Veterinary.veterinary_id as id, Veterinary.social_url_id, Veterinary.name, Veterinary.phone,Veterinary.location,Veterinary.opening_hours,Veterinary.latitude,Veterinary.longitude,User.photo FROM Veterinary JOIN User ON Veterinary.veterinary_id = User.user_id',(err,rows)=>{
         if(err){
           console.log(err);
           handler(null,err);
         }else{
           const limit = 5;
+          
           rows.forEach(vet => {
             let dataVet = {
               veterinary: null,
               distance: 0
             }
-            connection.query('SELECT photo from User WHERE user_id = ?',[vet.veterinary_id],(err,rows)=>{
-              if(err){
-                console.log(err);
-                handler(err);
-              }else{
-//TODO
-              }
-            });
-            
             let locationVet = {
               latitude: vet.latitude,
               longitude: vet.longitude
             }
             dataVet.veterinary = {
-
+              id: vet.id,
+              social_url_id: vet.social_url_id,
+              name: vet.name,
+              phone: vet.phone,
+              location: vet.location,
+              photo: vet.photo,
+              opening_hours: vet.opening_hours,
+              latitude: vet.latitude,
+              longitude: vet.longitude
             }
-            dataVet.veterinary = new Veterinary(
-              vet.id,
-              vet.social_url_id,
-              vet.name,
-              vet.phone,
-              vet.location,
-              vet.opening_hours,
-              vet.latitude,
-              vet.longitude
-            );
+            
             dataVet.distance = helpers.distance(location,locationVet);
             dataVeterinaries.push(dataVet);
           });
@@ -107,7 +98,6 @@ class Veterinary {
               }
             });
           }
-          
         }else{
           console.log(err);
           handler(err);

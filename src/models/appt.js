@@ -85,15 +85,29 @@ class Appt {
     }
 
     addAppts(appt_data,handler){
-      connection.query('INSERT INTO Appointment SET ? ',[appt_data],(err,result)=>{
+      query = 'SELECT * FROM Appointment ';
+      query += 'WHERE ((? between start_time and end_time) OR (? between start_time and end_time)) ';
+      query += 'AND veterinarian_id = ?)';
+      connection.query(query,[appt_data.start_time,appt_data.end_time,appt_data.veterinarian_id],(err,rows)=>{
         if(err){
           console.log(err);
           handler(err);
-        }else{ 
-          handler(null);
+        }else{
+          if(rows.length===0){
+            connection.query('INSERT INTO Appointment SET ? ',[appt_data],(err,result)=>{
+              if(err){
+                console.log(err);
+                handler(err);
+              }else{ 
+                handler(null);
+              }
+            });
+          }else{
+            handler({message:"Appointments full"});
+          }
         }
-
       });
+      
     }
   }
   

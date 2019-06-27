@@ -1,6 +1,7 @@
 const connection  = require('../database.js');
 const helpers = require('../lib/helpers')
 const personAPI = require('./person')
+const userAPI = require('./user');
 
 class Vet {
     constructor (id, degree, linkedin){
@@ -61,12 +62,20 @@ class Vet {
                 console.log(err);
                 handler(err);
               }else{
-                handler(null);
+                userAPI.updateUser(vetId, newData.user,(err)=>{
+                  if(err){
+                    console.log(err);
+                    handler(err);
+                  }else{
+                    handler(null);
+                  }
+                });
               }
             });            
           }
         }else{
-
+          console.log(err);
+          handler(err);
         }
       });
     }
