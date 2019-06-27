@@ -47,12 +47,13 @@ class Veterinary {
 
     getCloseVeterinaries(location,handler){
       let dataVeterinaries = [];
-      connection.query('SELECT * FROM Veterinary',(err,rows)=>{
+      connection.query('SELECT Veterinary.veterinary_id as id, Veterinary.social_url_id, Veterinary.name, Veterinary.phone,Veterinary.location,Veterinary.opening_hours,Veterinary.latitude,Veterinary.longitude,User.photo FROM Veterinary JOIN User ON Veterinary.veterinary_id = User.user_id',(err,rows)=>{
         if(err){
           console.log(err);
           handler(null,err);
         }else{
           const limit = 5;
+          
           rows.forEach(vet => {
             let dataVet = {
               veterinary: null,
@@ -62,16 +63,18 @@ class Veterinary {
               latitude: vet.latitude,
               longitude: vet.longitude
             }
-            dataVet.veterinary = new Veterinary(
-              vet.id,
-              vet.social_url_id,
-              vet.name,
-              vet.phone,
-              vet.location,
-              vet.opening_hours,
-              vet.latitude,
-              vet.longitude
-            );
+            dataVet.veterinary = {
+              id: vet.id,
+              social_url_id: vet.social_url_id,
+              name: vet.name,
+              phone: vet.phone,
+              location: vet.location,
+              photo: vet.photo,
+              opening_hours: vet.opening_hours,
+              latitude: vet.latitude,
+              longitude: vet.longitude
+            }
+            
             dataVet.distance = helpers.distance(location,locationVet);
             dataVeterinaries.push(dataVet);
           });
@@ -81,6 +84,27 @@ class Veterinary {
         }
       });
     }
+
+    updateVeterinary(vetId,newData,handler){
+      connection.query('UPDATE Veterinary SET ? WHERE veterinary_id = ?',[newData.vetData,vetId],(err,result)=>{
+        if(!err){
+          if(newData.UserData!=null){
+            connection.query('UPDATE User SET ? WHERE user_id = ?'[newData.userData,vetId],(err,result)=>{
+              if(!err){
+                handler(null);
+              }else{
+                console.log(err);
+                handler(err);
+              }
+            });
+          }
+        }else{
+          console.log(err);
+          handler(err);
+        }
+      });
+    }
+
 }
 
 module.exports = new Veterinary()

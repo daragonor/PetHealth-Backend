@@ -20,4 +20,26 @@ mysqlConnection.connect(function (err) {
   }
 });
 
-module.exports = mysqlConnection;
+const dbcall = (query,params) => {
+  return new Promise((resolve, reject) => {
+    mysqlConnection.query(
+          query,params,
+          (error, rows, results) => {
+              if (error) return reject(error);
+              return resolve(rows);
+          });
+  });
+};
+
+class MysqlDB{
+  async query(query,params,handler){
+    try{
+      let rows = await dbcall(query,params);
+      handler(null,rows);
+    }catch(error){
+      handler(error,null);
+    }
+  }
+}
+
+module.exports = new MysqlDB();

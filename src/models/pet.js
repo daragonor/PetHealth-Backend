@@ -14,7 +14,7 @@ class Pet{
     
     getAll(userId,handler){
         var pets = [];
-        connection.query('SELECT * FROM Pet WHERE owner_id = ?',[userId],(err,rows,fields)=>{
+        connection.query('SELECT * FROM Pet WHERE owner_id = ?',[userId],(err,rows)=>{
                 if(!err){
                     rows.forEach(pet => {
                         pets.push(new Pet(

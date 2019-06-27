@@ -49,4 +49,25 @@ router.get('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
     });
 });
 
+router.put('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
+    let veterinaryId = req.params.veterinaryId;
+    const {bio,name,location,opening_hours,latitude,longitude} = req.body;
+    veterinaryAPI.updateVeterinary(veterinaryId,newData,(err)=>{
+        let response = {
+            status:"",
+            message:""
+        };
+        if(err){
+            console.log(err);
+            response.status="Error";
+            response.message = "Unable to update Veterinary";
+            res.status(500).send(response);
+        }else{
+            response.status="Ok";
+            response.message="Updated Veterinary successfully";
+            res.status(200).send(response);
+        }
+    });
+});
+
 module.exports = router;

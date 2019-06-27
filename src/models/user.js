@@ -32,6 +32,17 @@ class User {
             }          
         })
     }
+
+    updateUser(userId,user,handler){
+      connection.query('UPDATE User SET ? WHERE user_id = ?',[user,userId],(err,result)=>{
+        if(err){
+          console.log(err.message);
+          handler(err);
+        }else{
+          handler(null);
+        }
+      });
+    }
   }
 
   module.exports = new User()
