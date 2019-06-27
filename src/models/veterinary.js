@@ -86,10 +86,10 @@ class Veterinary {
     }
 
     updateVeterinary(vetId,newData,handler){
-      connection.query('UPDATE Veterinary SET ? WHERE veterinary_id = ?',[newData.vetData,vetId],(err,result)=>{
+      connection.query('UPDATE Veterinary SET ? WHERE veterinary_id = ?',[newData.veterinary,vetId],(err,result)=>{
         if(!err){
           if(newData.UserData!=null){
-            connection.query('UPDATE User SET ? WHERE user_id = ?'[newData.userData,vetId],(err,result)=>{
+            connection.query('UPDATE User SET ? WHERE user_id = ?'[newData.user,vetId],(err,result)=>{
               if(!err){
                 handler(null);
               }else{

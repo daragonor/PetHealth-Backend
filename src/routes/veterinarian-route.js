@@ -6,7 +6,7 @@ const helpers = require('../lib/helpers');
 const personAPI = require('../models/person.js');
 const vetAPI = require('../models/vet.js');
 
-router.get('/veterinarian/:vetId',helpers.verifyToken,(req,res)=>{
+router.get('/veterinarians/:vetId',helpers.verifyToken,(req,res)=>{
     const vetId = req.params.vetId;
     let response = {
         status:"",
@@ -39,9 +39,29 @@ router.get('/veterinarian/:vetId',helpers.verifyToken,(req,res)=>{
     });
 });
 
-router.put('/veterinarian/:vetId',helpers.verifyToken,(req,res)=>{
+router.put('/veterinarians/:vetId',helpers.verifyToken,(req,res)=>{
     const vetId = req.params.vetId;
-    const {name,last_name,phone,address} = req.body;
+    const {name,last_name,phone,address,dni,mail,birth_date,linkedin_link} = req.body;
+    let newData;
+    newData.vet = {linkedin_link};
+    newData.person = {name,last_name,address,phone,birth_date,dni};
+    newData.user = {mail};
+    vetAPI.updateVet(vetId,newData,(err)=>{
+        let response = {
+            status:"",
+            message:""
+        }
+        if(err){
+            response.status = "Error";
+            response.message = "Unable to update Veterinarian";
+            console.log(err);
+            res.status(500).send(response);
+        }else{
+            response.status = "OK";
+            response.message = "Veterinarian updated successfully";
+            res.status(200).send(500);
+        }
+    });
 });
 
 module.exports = router;
