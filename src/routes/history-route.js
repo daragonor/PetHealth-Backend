@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const helpers = require('../lib/helpers');
 const historyAPI = require('../models/clinic_history');
+const apptAPI = require('../models/appt');
 
 router.get('/pets/:petId/history',helpers.verifyToken,(req,res)=>{
     const petId = req.params.petId;
@@ -28,7 +29,7 @@ router.post('/appointments/:apptId/history',helpers.verifyToken,(req,res)=>{
     const appointment_id = req.params.apptId;
     const {motive,diagnosis} = req.body;
     let historyData = {motive,diagnosis,appointment_id};
-    historyAPI.addHistory(historyData,(err)=>{
+    apptAPI.finishAppointment(historyData,(err)=>{
         let response = {
             status: "",
             message: "",

@@ -16,7 +16,27 @@ class Appt {
         this.vet_id = vet_id
         this.veterinary_id = veterinary_id 
         this.type = type
-      }
+    }
+    
+    finishAppointment(historyData,handler){
+        connection.query('UPDATE Appointment SET status = ? WHERE appointment_id = ?',['TERMINADO',historyData.appointment_id],(err,result)=>{
+          if(err){
+            console.log(err);
+            handler(err);
+          }else{
+            historyAPI.addHistory(historyData,(error)=>{
+              if(error){
+                console.log(error);
+                handler(error)
+              }else{
+                handler(null);
+              }
+            });
+            
+          }
+        });
+    }
+    
     getAppts(userId,handler){
       let response = [];
       connection.query('call prcd_appointments(?)',[userId],async (err,rows)=>{
@@ -171,18 +191,6 @@ class Appt {
       });
       
     }
-    
-    finishAppointment(apptId,handler){
-      connection.query('UPDATE Appointment SET status = ? WHERE appointment_id = ?',['TERMINADO',apptId],(err,result)=>{
-        if(err){
-          console.log(err);
-          handler(err);
-        }else{
-          handler(null);
-        }
-      });
-    }
-  
-  }
+}
   
 module.exports = new Appt()
