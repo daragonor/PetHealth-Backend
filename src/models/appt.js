@@ -116,8 +116,6 @@ class Appt {
       } else if (userableType == 2){
         query += 'WHERE owner_id = ' + userId
       }
-      
-      
       connection.query(query, [userId],(err, rows) => {
         if(!err) {
           rows.forEach(appt => {
