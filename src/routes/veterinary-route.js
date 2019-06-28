@@ -52,6 +52,7 @@ router.get('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
 router.put('/veterinaries/:veterinaryId',helpers.verifyToken,(req,res)=>{
     let veterinaryId = req.params.veterinaryId;
     const {name,location,opening_hours,mail} = req.body;
+    let newData = {};
     newData.veterinary = {name,location,opening_hours};
     newData.user = {mail};
     veterinaryAPI.updateVeterinary(veterinaryId,newData,(err)=>{

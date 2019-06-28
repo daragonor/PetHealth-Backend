@@ -41,10 +41,10 @@ router.get('/veterinarians/:vetId',helpers.verifyToken,(req,res)=>{
 
 router.put('/veterinarians/:vetId',helpers.verifyToken,(req,res)=>{
     const vetId = req.params.vetId;
-    const {name,last_name,phone,address,dni,mail,birth_date,linkedin_link} = req.body;
-    let newData;
+    const {name,last_name,phone,address,dni,mail,linkedin_link} = req.body;
+    let newData = {};
     newData.vet = {linkedin_link};
-    newData.person = {name,last_name,address,phone,birth_date,dni};
+    newData.person = {name,last_name,address,phone,dni};
     newData.user = {mail};
     vetAPI.updateVet(vetId,newData,(err)=>{
         let response = {

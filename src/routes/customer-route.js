@@ -6,9 +6,9 @@ const customerAPI = require('../models/customer.js');
 
 router.put('/customers/:customerId',helpers.verifyToken,(req,res)=>{
     const customerId = req.params.customerId;
-    const {mail,name,last_name,dni,address,phone,birth_date} = req.body;
-    let newData;
-    newData.person = {name,last_name,dni,address,phone,birth_date};
+    const {mail,name,last_name,dni,address,phone} = req.body;
+    let newData = {};
+    newData.person = {name,last_name,dni,address,phone};
     newData.user = {mail};
     customerAPI.updateCustomer(customerId,newData,(err)=>{
         let response = {
