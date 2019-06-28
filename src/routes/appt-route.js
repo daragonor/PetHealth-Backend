@@ -57,7 +57,6 @@ router.post('/user/:userId/appts',helpers.verifyToken, (req, res) => {
         response.data = apptsData
         try {
             await asyncForEach(apptsData,async (appt) => {
-                console.log(appt.appointment);
                 const history = await dbcall('SELECT *  FROM ClinicHistory WHERE appointment_id = ' + appt.appointment.id);
                 appt.pet.history = history
             })
