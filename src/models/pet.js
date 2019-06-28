@@ -1,4 +1,5 @@
 const connection  = require('../database.js');
+const customerAPI = require('./customer')
 
 class Pet{
     constructor(id, name, description, race, birth_date, status, image_url, owner_id){
@@ -36,6 +37,26 @@ class Pet{
                 }
         });
     }
+
+    getAllEmail(mail,handler){
+        let pets = [];
+        customerAPI.getCustomerEmail(mail,(customer,err)=>{
+            if(err){
+                console.log(err);
+                handler(null,err);
+            }else{
+                this.getAll(customer.customer_id,(pets,error)=>{
+                    if(error){
+                        console.log(error);
+                        handler(null,error);
+                    }else{
+                        handler(pets,null);
+                    }
+                });
+            }
+        });
+    }
+
     getPet(userId,petId,handler){
         var pet = null;
         connection.query('SELECT * FROM Pet WHERE owner_id = ? AND pet_id = ?',[userId,petId],(err,rows)=>{

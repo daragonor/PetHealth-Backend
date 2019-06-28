@@ -1,5 +1,7 @@
 const connection  = require('../database.js');
 const helpers = require('../lib/helpers');
+const apptAPI = require('./appt')
+
 
 class ClinicHistory{
     async getHistory(petId,handler){
@@ -32,7 +34,14 @@ class ClinicHistory{
                 console.log(err);
                 handler(err);
             }else{
-                handler(null);
+                apptAPI.finishAppointment(historyData.appointment_id,(error)=>{
+                    if(error){
+                        console.log(error);
+                        handler(error);
+                    }else{
+                        handler(null);
+                    }
+                });
             }
         });
     }

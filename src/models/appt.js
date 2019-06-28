@@ -171,6 +171,18 @@ class Appt {
       });
       
     }
+    
+    finishAppointment(apptId,handler){
+      connection.query('UPDATE Appointment SET status = ? WHERE appointment_id = ?',['TERMINADO',apptId],(err,result)=>{
+        if(err){
+          console.log(err);
+          handler(err);
+        }else{
+          handler(null);
+        }
+      });
+    }
+  
   }
   
 module.exports = new Appt()
