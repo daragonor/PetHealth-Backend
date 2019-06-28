@@ -28,7 +28,7 @@ router.put('/customers/:customerId',helpers.verifyToken,(req,res)=>{
     });
 });
 
-router.get('/customer/:customerId',helpers.verifyToken,(req,res)=>{
+router.get('/customers/:customerId',helpers.verifyToken,(req,res)=>{
     const customerId = req.params.customerId;
     customerAPI.getCustomer(customerId,(data,err)=>{
         let response = {
@@ -49,7 +49,7 @@ router.get('/customer/:customerId',helpers.verifyToken,(req,res)=>{
     });
 });
 
-router.get('/customer',helpers.verifyToken,(req,res)=>{
+router.get('/customers',helpers.verifyToken,(req,res)=>{
     const mail = req.query.mail;
     if(mail){
         customerAPI.getCustomerEmail(mail,(data,err)=>{

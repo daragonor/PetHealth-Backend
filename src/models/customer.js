@@ -10,14 +10,14 @@ class Customer {
     }
 
     getCustomers(handler){
-      connection.query('SELECT *  FROM view_customer',null,(err,rows)=>{
+      connection.query('SELECT *  FROM view_customer',[],(err,rows)=>{
         if(err){
           console.log(err);
           handler(null,err);
         }else{
-          let response
+          let response = []
           rows.forEach(cust => {
-            response = {
+            response.push({
               id: cust.customer_id,
               name: cust.name,
               last_name: cust.last_name,
@@ -28,7 +28,7 @@ class Customer {
               username: cust.username,
               photo: cust.photo,
               rating: cust.rating
-            };
+            });
           });
           handler(response,null);
         }
