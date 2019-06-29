@@ -1,0 +1,289 @@
+/*
+  STYLES GUIDE:
+  0. RESET
+  1. LAYOUT
+  2. GENERIC ITEMS
+  3. PARTS OF WEB
+  4. LIST
+  5. FORM
+  5. ANIMATIONS
+  ----------
+  COLORS:
+    color1 => #2c3e50;
+    color2 => #34495e;
+    color3 => #3498db;
+    color4 => #fff;
+*/
+
+/* 0 RESET */
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+div{
+    align-content:center;
+    align-self:center;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+body {
+    text-align: center;
+    font: 300 20px/1.7 'Roboto Condensed';
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #abcdef;
+}
+
+.tarifas {
+    text-align: left;
+}
+
+.list-developers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .list-developers figure {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+    }
+
+
+.header {
+    height: 450px;
+    background: url(../images/dummy-header.jpg) no-repeat center top;
+    background-size: cover;
+}
+
+.navbar {
+    height: 63px;
+    background: #2c3e50;
+    border-bottom: 1px dashed #3498db;
+}
+
+    .navbar a {
+        padding: 0 20px;
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        font: 20px 'Stint Ultra Condensed';
+    }
+
+.title {
+    margin-bottom: 40px;
+    font: 60px 'Stint Ultra Condensed';
+    text-transform: uppercase;
+}
+
+p {
+    margin-bottom: 40px;
+}
+
+.btn {
+    border: 2px solid #fff;
+    padding: 10px 40px;
+    display: inline-block;
+    text-decoration: none;
+    color: #000000;
+}
+
+/* 3 PARTS OF WEB */
+.content {
+    padding: 80px 0;
+}
+
+.who {
+    background: #2c3e50;
+    color: #fff;
+}
+
+    .who p {
+        max-width: 1055px;
+        margin: 0 auto;
+    }
+
+.services {
+    background: #34495e;
+    color: #fff;
+}
+
+.tarifas {
+    background: url(../images/dummy-tarifas.jpg) no-repeat center top;
+    background-size: cover;
+    color: #fff;
+}
+
+.contain {
+    max-width: 1055px;
+    margin: 0 auto;
+}
+
+.tarifas p {
+    max-width: 450px;
+}
+
+.localization {
+    color: #34495e;
+    padding-bottom: 0;
+}
+
+    .localization .map img {
+        max-width: 100%;
+        width: 100%;
+    }
+
+
+
+    #outerbox{
+        width:1500px;
+        overflow:hidden;
+        align-content:center;
+    }
+
+    #sliderbox{
+        position:relative;
+        align-content:center;
+        width:6000px;
+        animation-name:Jamal;
+        animation-duration:20s;
+        animation-iteration-count:infinite;
+    }
+    #sliderbox img{
+        float:left;
+    }
+
+@keyframes Jamal {
+    0% {
+        left: 0px;
+    }
+
+    20% {
+        left: 0px;
+    }
+
+    25% {
+        left: -1500px;
+    }
+
+    45% {
+        left: -1500px;
+    }
+
+    50% {
+        left: -3000px;
+    }
+
+    70%{
+        left: -3000px;
+    }
+    75%{
+        left: -4500px;
+    }
+    95%{
+        left: -4500px;
+    }
+    100%{
+        left: -6000px;
+    }
+ }
+
+/* 3 LIST  */
+
+.list-developers figure {
+    position: relative;
+    width: 150px;
+    height: 190px;
+}
+
+    .list-developers figure:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        z-index: 0;
+        background: #fff;
+        width: 150px;
+        height: 150px;
+    }
+
+.list-developers img {
+    position: relative;
+    z-index: 1;
+}
+
+.list-developers li {
+    padding: 0 30px;
+}
+
+.list-developers figcaption {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: -40px;
+}
